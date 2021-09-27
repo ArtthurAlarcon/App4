@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
+
+namespace App4.ViewModels
+{
+    public class CountViewModel : BaseViewModel
+    {
+        int _contador;
+        ICommand _buttonClickCommand;
+        ICommand _resetButtonCommand;
+        string _countConverted;
+
+        public CountViewModel()
+        {
+            _contador = 0;
+        }
+
+        public int Contador {
+            get => _contador;
+            set {
+                if (value == _contador) return;
+                _contador = value;
+                CountConverted = $"Haz dado click {_contador} veces";
+                OnPropertyChanged();
+            }
+        }
+
+        public string CountConverted
+        {
+            get => _countConverted;
+            set 
+            {
+                if (string.Equals(_countConverted, value)) return;
+
+                _countConverted = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand ButtonClickCommand
+        {
+            get => _buttonClickCommand ?? (_buttonClickCommand = new Command(ButtonClickCommandAction));
+        }
+        private void ButtonClickCommandAction()
+        {
+            Contador++;
+        }
+
+        public ICommand ResetButtonCommand
+        {
+            get => _resetButtonCommand ?? (_resetButtonCommand = new Command(ResetButtonCommandAction));
+        }
+
+        private void ResetButtonCommandAction()
+        {
+            Contador = 0;
+            CountConverted = "Haz reseteado el contador";
+        }
+    }
+}
